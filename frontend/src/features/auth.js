@@ -10,10 +10,16 @@ export const fetchMeApi = async () => {
 export const loginApi = async (token) => {
   const response = await api.post(
     "/api/auth/login",
-    {token},
-    
+    { token },
+    { withCredentials: true } // Yeh zaroori hai agar backend cookie set kar raha hai
   );
-console.log(response)
+  console.log(response);
+  
+  // Agar backend response mein koi token bhej raha hai, toh use yahan save karein:
+  // if (response.data.token) {
+  //   localStorage.setItem("token", response.data.token);
+  // }
+  
   return response.data;
 };
 
