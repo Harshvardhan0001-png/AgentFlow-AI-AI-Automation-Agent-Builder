@@ -17,12 +17,14 @@ const PORT = process.env.PORT || 10000;
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://agent-flow-ai-ai-automation-agent-builder-iajo-endwt5w9k.vercel.app",
-      process.env.CLIENT_URL,
-      process.env.FRONTEND_URL
-    ].filter(Boolean),
+    origin: function (origin, callback) {
+      // Agar koi server-to-server request hai ya Vercel/localhost domain hai toh allow karein
+      if (!origin || origin.endsWith(".vercel.app") || origin.includes("localhost")) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
